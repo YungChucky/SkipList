@@ -1,0 +1,13 @@
+public boolean contains(T value) {
+		boolean result;
+		if (head == null) {
+			result = false;
+		} else {
+			IndexListEntry<T> temp = head;
+			while ((temp.next != null) && (temp.next.value.compareTo(value) <= 0)) {
+				temp = temp.next;
+			}
+			result = baseList.contains(value, temp.pointer);
+		}
+		return result;
+	}
