@@ -1,0 +1,46 @@
+public boolean add(T value) {
+
+		BaseListEntry<T> reference = baseList.add(value);
+		baseListLength++;
+
+		if (indexListLength < indexMaxLength) {
+
+			if (head == null) {
+				head = new IndexListEntry<T>(value, null, reference);
+			} else {
+				IndexListEntry<T> temp = head;
+				while ((temp.next != null) && (temp.next.value.compareTo(value) < 0)) {
+					temp = temp.next;
+				}
+				if (temp.next == null) {
+					temp.next = new IndexListEntry<T>(value, null, reference);
+				} else {
+					temp.next = new IndexListEntry<T>(value, temp.next, reference);
+				}
+			}
+			indexListLength++;
+		} else {
+
+			IndexListEntry<T> currentIndex = head.next;
+
+
+			int intervalWidth = baseListLength / indexMaxLength;
+
+
+			int intervalAdj = baseListLength % indexMaxLength;
+
+			int indexPosition = 0;
+			for (int i = 1; i < indexMaxLength; i++) {
+				int offset = 0;
+
+				if (intervalAdj - i >= 0)
+					offset = 1;
+				indexPosition = indexPosition + intervalWidth + offset;
+				BaseListEntry<T> newIndexTarget = baseList.getBaseListEntry(indexPosition);
+				currentIndex.pointer = newIndexTarget;
+				currentIndex.value = newIndexTarget.value;
+				currentIndex = currentIndex.next;
+			}
+		}
+		return true;
+	}
